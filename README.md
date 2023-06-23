@@ -7,4 +7,4 @@ Code I created and worked on that runs alongside the SIS school systems to autom
 
 #Website
 Job listings page of a website that I worked on.
-Figma link of final product which I worked on alongside the graphic design component: https://www.figma.com/proto/YIHkn8jFUFAyD3v9sq1bWt/Log-in-Page-Prototype?node-id=51-26&starting-point-node-id=51%3A26&mode=design
+Figma link of end product idea (mobile version) which I worked on alongside the graphic design department: https://www.figma.com/proto/YIHkn8jFUFAyD3v9sq1bWt/Log-in-Page-Prototype?node-id=51-26&starting-point-node-id=51%3A26&mode=design
