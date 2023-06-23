@@ -1,0 +1,233 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+/* For Desktop View */
+@media screen and (min-width: 1024px) {
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f3f3;
+    text-align: center;
+    width: 98%;
+  }
+
+  .heading img {
+    float: left;
+    width: 150px;
+    height: 50px;
+  }
+  
+  .heading h1 {
+    position: relative;
+    top: 0px;
+    left: 10px;
+    text-align: left;
+    color: #7F00FF;
+    text-shadow: 0px 0px 5px #FFA500;
+    font-family: sans-serif;
+    font-size:3em;
+    font-weight: bold;
+    font-style: bold;
+    letter-spacing: .1em;
+    margin:0px;
+    padding:0px;
+  }
+
+  .job_heading img {
+      float: center;
+      width:150px;
+      height:50px;
+  }
+ 
+  .job_heading h1 {
+    color: #7F00FF;
+    text-shadow: 0px 0px 5px #FFA500;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-style: bold;
+    letter-spacing: .15em;
+    text-align: center;  
+  }
+  
+  .add-to-table-btn {
+    background-color: #FFA500;
+    color: black;
+    width: 300px;
+    padding: 8px;
+    border: black;
+    border-radius: 5px;
+    text-align: center;
+    font-family: sans-serif;
+    font-style: bold;
+    letter-spacing: .15em;
+  }
+  
+  .add-to-table-btn:hover {
+    background-color: #7F00FF;
+  }
+
+  h1, h3 {
+    color: #7F00FF;
+    text-shadow: 0px 0px 5px #FFA500;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-style: bold;
+    letter-spacing: .15em;
+    text-align: center;
+  }
+  
+  h2 {
+  font-size: 2.5em; /* increase font size */
+  font-weight: bold; /* make it bold */
+  text-transform: uppercase; /* uppercase text */
+  color: #7F00FF; /* change the text color to red */
+  text-shadow: 2px 2px 3px #FFA500; /* add a text shadow */
+}
+
+
+  form {
+    margin: 20px auto;
+    width: 300px;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.3);
+    text-align: center;
+  }
+
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+    font-family: sans-serif;
+    font-style: bold;
+    letter-spacing: .15em;
+  }
+  
+  td:nth-child(1) {
+  width: 10%;
+  background: #ddd;
+  }
+
+/* the second */
+td:nth-child(2) {
+  width: 80%;
+  background: #ccc;
+}
+
+/* the third */
+td:nth-child(3) {
+  width: 10%;
+  background: #bbb;
+ }
+
+  #filter-form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+    
+  .table {
+      width: 100%;
+      text-align: center;
+  }
+    
+  .logo-container {
+    display: block;
+    margin: 0 auto;
+  }
+    
+  .logo {
+    height: 150px;
+    padding: 10px;
+    transform: scaleX(1.5);
+  }
+
+  .featured-jobs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+    
+  .featured-jobs > div {
+    width: 500px;
+    margin: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+    
+  .featured-jobs > div h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 10px;
+  }
+    
+  .featured-jobs > div p {
+    margin: 10px;
+    font-size: 18px;
+    line-height: 1.5;
+  }
+    
+  .featured-jobs > div a {
+    display: block;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #7F00FF;
+    color: #fff;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+  }
+    
+    .featured-jobs > div a:hover {
+    background-color: #FFA500;
+  }
+    
+  .featured-jobs > div h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 10px;
+  }
+    
+  .featured-jobs > div p:first-of-type {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 10px;
+  }
+    
+  .featured-jobs > div p:nth-of-type(2) {
+    font-size: 16px;
+    font-style: bold;
+    margin: 10px;
+    color: #666;
+  }
+    
+  .featured-jobs > div p:last-of-type {
+    font-size: 16px;
+    margin: 10px;
+    line-height: 1.5;
+  }
+
+  .job {
+    margin-bottom: 30px;
+  }
+    
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+  }
+}
