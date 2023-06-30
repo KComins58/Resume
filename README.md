@@ -8,3 +8,9 @@ Code I created and worked on that runs alongside the SIS school systems to autom
 #Website
 Job listings page of a website that I worked on.
 Figma link of end product idea (mobile version) which I worked on alongside the graphic design department: https://www.figma.com/proto/YIHkn8jFUFAyD3v9sq1bWt/Log-in-Page-Prototype?node-id=51-26&starting-point-node-id=51%3A26&mode=design
+
+#Old-Class-Assignments
+The final assignments for classes in which we had to code in c, c++ and python.
+C:
+C++:
+Python: Calculate your golf handicap taking into account the par, slope and score of a player allowing them to save it and continue later or calculate a new user.
