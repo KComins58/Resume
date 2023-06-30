@@ -14,3 +14,5 @@ The final assignments for classes in which we had to code in c, c++ and python.
 C: Play poker with multiple people.
 C++: Save and order students grades.
 Python: Save and calculate your golf handicap.
+
+#Powershell-Staff is the most recent and as you can see, I have focused more on documenting my code so others can more easily understand it and the thought processes behind it.
