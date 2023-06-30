@@ -43,11 +43,11 @@ int bubbleSort(struct Node** head, int count, string *arr, int *data)
             {
                 *h = swap(p1, p2);
                 sTemp = arr[j];
-				iTemp = data[j];
-				arr[j]=arr[i];
-				data[j]=data[i];
-				arr[i]=sTemp;
-				data[i]=iTemp;
+		iTemp = data[j];
+		arr[j]=arr[i];
+		data[j]=data[i];
+		arr[i]=sTemp;
+		data[i]=iTemp;
                 swapped = 1;
             }
             h = &(*h)->next;
@@ -72,10 +72,10 @@ void printList(struct Node* n, string *arr)
 
 void sortName(int *data, string *arr, int iCount)
 {
-    int n,i,j;
+    	int n,i,j;
 	string sTemp;
 	int iTemp;
-    for(i=0;i<iCount;i++)
+	for(i=0;i<iCount;i++)
 	{
 		for(j=i+1;j<iCount;j++)
 		{
@@ -94,10 +94,10 @@ void sortName(int *data, string *arr, int iCount)
 
 void insertAtTheBegin(struct Node** start_ref, int data)
 {
-    struct Node* ptr1 = (struct Node*)malloc(sizeof(struct Node));
-        ptr1->data = data;
-        ptr1->next = *start_ref;
-        *start_ref = ptr1;
+    	struct Node* ptr1 = (struct Node*)malloc(sizeof(struct Node));
+	ptr1->data = data;
+	ptr1->next = *start_ref;
+	*start_ref = ptr1;
 }
 
 int main()
