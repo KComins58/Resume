@@ -11,6 +11,6 @@ Figma link of end product idea (mobile version) which I worked on alongside the 
 
 #Old-Class-Assignments
 The final assignments for classes in which we had to code in c, c++ and python.
-C:
-C++:
-Python: Calculate your golf handicap taking into account the par, slope and score of a player allowing them to save it and continue later or calculate a new user.
+C: Play poker with multiple people.
+C++: Save and order students grades.
+Python: Save and calculate your golf handicap.
