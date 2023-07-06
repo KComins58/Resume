@@ -3,7 +3,7 @@ $fileserver = "ExampleDC" #Server name
 $emaildomain = "@Example.com" #Email suffix @example.com
 $OUExtension = "OU=Test,DC=test,DC=local" #Sets OU, DC of AD
 $sisexportfilestaff = "C:\Users\Administrator\Desktop\staffexport.csv" #Textfile with staff information that needs to be imported
-$password = ConvertTo-SecureString -AsPlainText "Owls1234" -Force #Set the password to a secure string. Original password for staff is pre-set and changed on first logon
+$password = ConvertTo-SecureString -AsPlainText "Example1234" -Force #Set the password to a secure string. Original password for staff is pre-set and changed on first logon
 $webUrl = "https://docs.google.com/spreadsheets/d/e/Example/pubhtml"
 $scriptName = $MyInvocation.MyCommand.Name #retrieves the name of the currently running PowerShell script
 $runningInstances = Get-Process | Where-Object { $_.ProcessName -eq "powershell" -and $_.MainModule.FileName -like "*$scriptName" } #retrieve a list of running processes, checks if the process name is "powershell, checks if the process's main module filename matches the current script's name.
