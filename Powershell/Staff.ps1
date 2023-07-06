@@ -1,10 +1,10 @@
 $Domain = "@test.local" #Domain that AD is hosted on
 $fileserver = "ExampleDC" #Server name
-$emaildomain = "@example.com" #Email suffix @example.com
+$emaildomain = "@Example.com" #Email suffix @example.com
 $OUExtension = "OU=Test,DC=test,DC=local" #Sets OU, DC of AD
 $sisexportfilestaff = "C:\Users\Administrator\Desktop\staffexport.csv" #Textfile with staff information that needs to be imported
-$password = ConvertTo-SecureString -AsPlainText "Example123" -Force #Set the password to a secure string. Original password for staff is pre-set and changed on first logon
-$webUrl = "https://docs.google.com/spreadsheets/Exampleabcd/pubhtml"
+$password = ConvertTo-SecureString -AsPlainText "Owls1234" -Force #Set the password to a secure string. Original password for staff is pre-set and changed on first logon
+$webUrl = "https://docs.google.com/spreadsheets/d/e/Example/pubhtml"
 $scriptName = $MyInvocation.MyCommand.Name #retrieves the name of the currently running PowerShell script
 $runningInstances = Get-Process | Where-Object { $_.ProcessName -eq "powershell" -and $_.MainModule.FileName -like "*$scriptName" } #retrieve a list of running processes, checks if the process name is "powershell, checks if the process's main module filename matches the current script's name.
 $logfilepath = "\\ExampleDC\Changelog\Daily\" #The folder storing the changelog textfiles  WARNING WILL DELETE ALL BUT 13 files in this location. MAKE SEPARATE LOG LOCATION.
@@ -64,6 +64,8 @@ function HomePath($position) { #get the correct folder/OU names
         "secretary" {return "Office"} #All secretary
         "bus driver" {return "Support Staff"} #All bus driver
         "principal" {return "Office"} #Principle
+        "asst principal" {return "Office"} #asst principal
+
         default {return "Unknown"} #Otherwise causes an error if they have a position that hasn't been added
     }
 
@@ -74,17 +76,37 @@ function AddToGroups($employeeID,$position,$office,$accesslvl){ #Add a user to t
     Get-ADPrincipalGroupMembership $existingUser | Where-Object { $_.Name -ne "Domain Users" -and $_.Name -ne "911notifier" -and $_.Name -ne "Erate" -and $_.Name -ne "FMP" -and $_.Name -ne "Example Board of Education" -and $_.Name -ne "District Admin Team" -and
     $_.Name -ne "District ELL Teachers" -and $_.Name -ne "District Special Services" -and $_.Name -ne "SCCC Practical Nursing"} | ForEach-Object { Remove-ADGroupMember -Identity $_ -Members $existingUser -Confirm:$false }
     #office is building, position is admin/teacher/etc
-    Add-ADGroupMember -Identity "Generic Group" -Members $existingUser #Add all to Generic group
+    Add-ADGroupMember -Identity "Example Public Schools" -Members $existingUser #Add all to Example Public schools group
     Add-ADGroupMember -Identity "guest_wireless" -Members $existingUser #Add all to guest_wireless
     $offices = $office.ToUpper().Split(',') -replace " ", "" #If a staff member goes between multiple buildings, seperate by , #toupper so that it isn't case sensitive
-    
-    if ($accesslvl -eq "District All Access") {
-        Add-ADGroupMember -Identity "District All Access" -Members $existingUser 
-    } else {Add-ADGroupMember -Identity "Access Level 2" -Members $existingUser }
+    switch ($accesslvl) {
+        "District-All_Access" {Add-ADGroupMember -Identity "District-All_Access" -Members $existingUser}
+        "ACCESS-HS-Alltime" {Add-ADGroupMember -Identity "ACCESS-HS-Alltime" -Members $existingUser}
+        "ACCESS-HS-Limited" {Add-ADGroupMember -Identity "ACCESS-HS-Limited" -Members $existingUser}
+        "ACCESS-MS-Alltime" {Add-ADGroupMember -Identity "ACCESS-MS-Alltime" -Members $existingUser}
+        "ACCESS-MS-Limited" {Add-ADGroupMember -Identity "ACCESS-MS-Limited" -Members $existingUser}
+        "ACCESS-SC-Alltime" {Add-ADGroupMember -Identity "ACCESS-SC-Alltime" -Members $existingUser}
+        "ACCESS-SC-Limited" {Add-ADGroupMember -Identity "ACCESS-SC-Limited" -Members $existingUser}
+        "ACCESS-BF-Alltime" {Add-ADGroupMember -Identity "ACCESS-BF-Alltime" -Members $existingUser}
+        "ACCESS-BF-Limited" {Add-ADGroupMember -Identity "ACCESS-BF-Limited" -Members $existingUser}
+        "ACCESS-SB-Alltime" {Add-ADGroupMember -Identity "ACCESS-SB-Alltime" -Members $existingUser}
+        "ACCESS-SB-Limited" {Add-ADGroupMember -Identity "ACCESS-SB-Limited" -Members $existingUser}
+    }
 
     foreach ($officeCode in $offices) { #loop number of times needed for the groups the user is in
         switch ($officeCode.Trim()) {
-            "EX" {Add-ADGroupMember -Identity "Example Elementary" -Members $existingUser} #Example Elementary
+            "BE" {Add-ADGroupMember -Identity "Benton Elementary" -Members $existingUser} #Benton Elementary
+            "EW" {Add-ADGroupMember -Identity "Eastwood Elementary" -Members $existingUser} #Eastwood Elementary
+            "SB" {Add-ADGroupMember -Identity "Spainhower Primary School" -Members $existingUser} #Spainhower Primary School
+            "SC" {Add-ADGroupMember -Identity "Saline County Career Center" -Members $existingUser} #Saline County Career Center
+            "HS" {Add-ADGroupMember -Identity "Example High School" -Members $existingUser} #Example High School
+            "MS" {Add-ADGroupMember -Identity "Bueker Middle School" -Members $existingUser} #Bueker Middle School
+            "BF" {Add-ADGroupMember -Identity "Butterfield ECC" -Members $existingUser} #Butterfield ECC
+            "CO" {Add-ADGroupMember -Identity "District Central Office" -Members $existingUser} #District Central Office
+            "NW" { Add-ADGroupMember -Identity "Northwest School" -Members $existingUser} #Northwest School
+            "IA" { Add-ADGroupMember -Identity "Industrial Arts" -Members $existingUser} #Industrial Arts
+            "DC" { Add-ADGroupMember -Identity "Distribution Center" -Members $existingUser} #Distribution Center
+            "TLC" { Add-ADGroupMember -Identity "TLC" -Members $existingUser} #TLC
             default { Write-Host "Invalid office code: $officeCode"} #If they have an unknown office code
         }
     }
@@ -104,15 +126,24 @@ function AddToGroups($employeeID,$position,$office,$accesslvl){ #Add a user to t
 }
 
 function UpdateADUser($employeeID,$office,$sAMAccountName,$name,$givenname,$mail,$sn,$displayname,$newhomedirectory,$position,$userPrincipalName){
-    $storage = HomePath $position #Get the folder/ou to put the user in
     $existingUser = Get-ADUser -Filter "EmployeeID -eq '$employeeID'" -Properties * #Get matching user data according to employeeid
-    $path = "OU="+$storage+","+$OUExtension #1:OUstorage2034,OU=Students,OU=Test,DC=test,DC=local 2:2034ccheck 3:CHECK01 CHECK
-    $testpath = "CN="+$existinguser.Name+",OU=$storage,$OUExtension" #Change path in OU to new user name
+    $storage = HomePath $position #Get the folder/ou to put the user in
+    $offices = $office.ToUpper().Split(',') -replace " ", "" #If a staff member goes between multiple buildings, separate by , #toupper so that it isn't case sensitive
+    $onlyoffice = $offices[0]
+
+    if ($storage -eq "Support Staff") {
+        $onlyoffice = $position
+    }
+    $path = "OU="+$onlyoffice+",OU="+$storage+","+$OUExtension #1:OU=2034,OU=Students,OU=Test,DC=test,DC=local 2:2034ccheck 3:CHECK01 CHECK
+    $testpath = "CN="+$existinguser.Name+",OU="+$onlyoffice+",OU=$storage,$OUExtension" #Change path in OU to new user name
     $newhomedirectory = "\\$fileserver\$storage$\$sAMAccountName" #Where the new homedirectory will be located -either changed based on name change or location change
-    
-    if ($newhomedirectory -ne $existinguser.homedirectory) {
-        Set-ADUser -Identity $existingUser -Add @{proxyAddresses = $existingUser.mail } #Set proxy addresses so that a changed user will still recieve their old emails   
-        Move-Item -Path $existingUser.HomeDirectory -Destination $newhomedirectory -Force #Move homedirectory folder to newhomedirectory folder
+
+    if ("CN=$name,$path" -ne $existinguser) {
+        if ($name -ne $existingUser.name)
+        {
+            Set-ADUser -Identity $existingUser -Add @{proxyAddresses = $existingUser.mail } #Set proxy addresses so that a changed user will still recieve their old emails   
+            Move-Item -Path $existingUser.HomeDirectory -Destination $newhomedirectory -Force #Move homedirectory folder to newhomedirectory folder
+        }
         Move-ADObject -Identity $existinguser -TargetPath $path #Move OU in AD to new OU position
         Rename-ADObject -Identity $testpath -NewName $name #Rename OU in AD
         Set-ADUser -Identity "CN=$name,$path" -userPrincipalName $userPrincipalName -givenName $givenName -EmailAddress $mail -Surname $sn -SamAccountName $sAMAccountName -DisplayName $displayname -HomeDirectory $newhomedirectory -Description $position -Office $office -Enabled $true #Set all the attributes for th user
@@ -122,7 +153,18 @@ function UpdateADUser($employeeID,$office,$sAMAccountName,$name,$givenname,$mail
 
 function ChangeEntry($office){
      switch ($office) {
-            "Example" {return "EX"} #Benton Elementary
+            "Benton" {return "BE"} #Benton Elementary
+            "Eastwood" {return "EW"} #Eastwood Elementary
+            "SB" {return "SB"} #Spainhower Primary School
+            "SCCC" {return "SC"} #Saline County Career Center
+            "High School" {return "HS"} #Example High School
+            "BMS" {return "MS"} #Bueker Middle School
+            "Butterfield" {return "BF"} #Butterfield ECC
+            "Central Office" {return "CO"} #District Central Office
+            "Northwest" {return "NW"} #Northwest School
+            "Industrial Arts" {return "IA"} #Industrial Arts
+            "Distribution Center" {return "DC"} #Distribution Center
+            "TLC" {return "TLC"} #TLC
         }
 }
 function AddADUser($sAMAccountName,$name,$otherAttributes,$position,$password,$office){
@@ -190,7 +232,7 @@ switch ($result)
                 $accesslvl = $sisline.AccessLvl
                 $otherAttributes = @{'userPrincipalName' = "$userPrincipalName"; 'mail' = "$mail"; 'givenName' = "$givenName"; 'sn' = "$sn"; 'DisplayName' = "$displayname"; 'employeeID' = "$employeeID"; 'physicalDeliveryOfficeName' = "$office"; 'description' = "$position"; 'HomePhone' = $accesscard}
                 $otherAttributes.description = [string]$otherAttributes.description #Needs to be a string for AD
-            
+                
                 if ((Get-ADUser -Filter "EmployeeID -eq '$employeeID'") -eq $null) { #If new user - add
                     ADDADUser $sAMAccountName $name $otherAttributes $position $password $office
                 } else { #if current user - update
