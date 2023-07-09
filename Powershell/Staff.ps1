@@ -268,22 +268,20 @@ switch ($result)
     }
 }
 
-#Delete the #'s in the following lines to add code to remove users not in textfile but in the AD. Moves them to a specific folder - in this case Unknown is the name of the fold
-
-#$sisfile = Import-Csv -delimiter "`t" -Path $sisexportfilestaff -header "givenName","sn","position","office","employeeid" #Read from the saved textfile from the online csv file
-#$ADUsers = Get-ADUser -Filter * -SearchBase $OUExtension -Properties HomeDirectory, EmployeeID, SamAccountName #Get the list of AD users
-#$NotPresent = $sisfile.employeeid
-#foreach ($ADUser in $ADUsers) { #Iterate through each AD user
-#    $SamAccountName = $ADUser.SamAccountName
-#    $employeeID = $ADUser.EmployeeID #Set employeeID
-#    $HomeDirectory = $ADUser.HomeDirectory #Set Homedirectory
-#    $DistinguishedName = $ADUser.DistinguishedName
-#    if ($employeeID -notin $NotPresent -and $HomeDirectory -notlike '*Unknown*') {
-#        Move-Item -Path $HomeDirectory -Destination $UnknownFolder -Force
-#        Set-ADUser -Identity $DistinguishedName -HomeDirectory ($UnknownFolder+"\"+$SamAccountName) -SamAccountName $SamAccountName -Enabled $false #Change properties in AD
-#        Move-ADObject -Identity $DistinguishedName -TargetPath $UnknownOU #Move AD t to Withdrawn OU
-#        Write-Host "Not Found in sisfile`nHome directory: $HomeDirectory -> $UnknownFolder`nAD: $DistinguishedName -> $UnknownOU`n" #Write-Host adds to changelog
-#    }
-#}
+$sisfile = Import-Csv -delimiter "`t" -Path $sisexportfilestaff -header "givenName","sn","position","office","employeeid" #Read from the saved textfile from the online csv file
+$ADUsers = Get-ADUser -Filter * -SearchBase $OUExtension -Properties HomeDirectory, EmployeeID, SamAccountName #Get the list of AD users
+$NotPresent = $sisfile.employeeid
+foreach ($ADUser in $ADUsers) { #Iterate through each AD user
+    $SamAccountName = $ADUser.SamAccountName
+    $employeeID = $ADUser.EmployeeID #Set employeeID
+    $HomeDirectory = $ADUser.HomeDirectory #Set Homedirectory
+    $DistinguishedName = $ADUser.DistinguishedName
+    if ($employeeID -notin $NotPresent -and $HomeDirectory -notlike '*Unknown*') {
+        Move-Item -Path $HomeDirectory -Destination $UnknownFolder -Force
+        Set-ADUser -Identity $DistinguishedName -HomeDirectory ($UnknownFolder+"\"+$SamAccountName) -SamAccountName $SamAccountName -Enabled $false #Change properties in AD
+        Move-ADObject -Identity $DistinguishedName -TargetPath $UnknownOU #Move AD t to Withdrawn OU
+        Write-Host "Not Found in sisfile`nHome directory: $HomeDirectory -> $UnknownFolder`nAD: $DistinguishedName -> $UnknownOU`n" #Write-Host adds to changelog
+    }
+}
 
 Stop-Transcript #End log taking
