@@ -15,7 +15,7 @@ $encryptedpwd = $securepwd | ConvertFrom-SecureString #Encrypt the secure sting 
 #Define content for new script
 $scriptContent = @"
     `$pwd = "$encryptedpwd" | ConvertTo-SecureString #Decrypt the encrypted string so it can be called to update password
-    `$UserAccount = Get-LocalUser -Name "cts" #Get UserAccount with correct username
+    `$UserAccount = Get-LocalUser -Name "administrator" #Get UserAccount with correct username
     if (`$UserAccount.Password -ne `$null) {
         `$storedPwd = `$UserAccount.Password | ConvertFrom-SecureString
     }
