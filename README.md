@@ -4,6 +4,7 @@ A repository of the code I have access to that I have created or worked on with 
 #Powershell
 Code I created and worked on that runs alongside the SIS school systems to automatically create Staff and Student Accounts. Task scheduler allows it to run daily at a specified time.
 -Staff allows both to run from a shared google sheet and from user input so it is centralized and those unfamiliar with Active Directory can easily add users.
+-CreationScript creates another powershell scripts with an encripted password that can be run on the local administrator to ensure the admin password is the same domain wide.
 
 #Website
 Job listings page of a website that I worked on.
